@@ -1,3 +1,6 @@
+import '../css/reset.css';
+import '../css/mini.css';
+
 class Scene {
 
   constructor() {
