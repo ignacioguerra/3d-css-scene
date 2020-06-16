@@ -188,6 +188,8 @@ class Camera {
     this.blank = { x: 0, y: 0, z: 0 }
     this.perspective = 600
     this.maxSpeed = 0.2
+    this.isRotating = false
+    this.rotationTimeout = null
     this.speed = {
       front: 0,
       back: 0,
@@ -220,7 +222,6 @@ class Camera {
   }
 
   move = () => {
-
     if(this.paused) {
       this.rotation.x += (this.blank.x-this.rotation.x)*0.05
       this.rotation.y += (this.blank.y-this.rotation.y)*0.05
@@ -272,7 +273,29 @@ class Camera {
       skewX(0) skewY(0)
     `
     this.move()
+    this.broadcastMovement()
     if(this.worldArround) this.worldArround.style.transform = `translate3d(${-this.x}px,${this.y}px,${-this.z}px)`
+  }
+
+  isMoving = () => {
+    return this.movingTo.front || this.movingTo.back || this.movingTo.left || this.movingTo.right || this.isRotating
+  }
+
+  broadcastMovement = () => {
+    if (channel && this.isMoving()) {
+      channel.push(
+        "move",
+        {
+          posX: this.position.x,
+          posY: this.position.y,
+          posZ: this.position.z,
+          rotX: this.rotation.x,
+          rotY: this.rotation.y,
+          rotZ: this.rotation.z,
+        },
+        10000
+      );
+    }
   }
 
   updatePerspective = () => {
@@ -303,6 +326,14 @@ class Camera {
    */
   mouseMoveHandler = (e) => {
     if(this.paused) return false
+
+    // Will inform rotation
+    this.isRotating = true
+    clearTimeout(this.rotationTimeout)
+    this.rotationTimeout = setTimeout(() => {
+      this.isRotating = false
+    }, 500)
+
     this.rotation.y += e.movementX * this.settings.mouseSensitivity
     this.rotation.x += -e.movementY * this.settings.mouseSensitivity
     if(this.rotation.x < -90) this.rotation.x = -90
@@ -736,9 +767,66 @@ step2.translateX(-17.5)
 step2.translateZ(-38)
 step2.update()
 
+/**
+ * Connection to sockets
+ * docs: https://hexdocs.pm/phoenix/js/
+ */
+import { Socket, Presence } from "phoenix";
+import random_name from "node-random-name";
 
+// Connect to socket
+// could bootstrap using initial camera position and rotation
+// random_name assigns default username and input could be retrieved from user
+// localhost:4000 is running https://github.com/pehuen-rodriguez/everlive
+const socket = new Socket("ws://localhost:4000/socket", {
+  params: { username: random_name() },
+});
+socket.connect();
 
+// Join channel using video ID
+const channel = socket.channel(`room:${"dQw4w9WgXcQ"}`);
+channel
+  .join()
+  // User ID can be collected to this Camera's (me) internal properties
+  .receive("ok", ({ userId }) => console.log(`Received userId: ${userId}`))
+  // Collect and display errors 
+  .receive("error", ({ reason }) => console.log("Failed join", reason))
+  .receive("timeout", () =>
+    console.log("Networking issue. Still waiting...")
+  );
 
+// Presence spawns events
+// presence.onSync https://hexdocs.pm/phoenix/js/#syncing-state-from-the-server
+// or individual events
+// https://hexdocs.pm/phoenix/js/#handling-individual-presence-join-and-leave-events
+const presence = new Presence(channel);
+
+// detect if user has joined for the 1st time or from another tab/device
+presence.onJoin((id, current, newPres) => {
+  if(!current){
+    console.log("user has entered for the first time", newPres)
+  } else {
+    console.log("user additional presence", newPres)
+  }
+})
+
+// detect if user has left from all tabs/devices, or is still present
+presence.onLeave((id, current, leftPres) => {
+  if(current.metas.length === 0){
+    console.log("user has left from all devices", leftPres)
+  } else {
+    console.log("user left from a device", leftPres)
+  }
+})
+
+// receive presence data from server
+presence.onSync(() => {
+  displayUsers(presence.list())
+})
+
+const displayUsers = (list) => {
+  console.log(list)
+}
 /**
  * @todo Spacialized audio
  */
