@@ -55,3 +55,8 @@ iframe {
 .stage .scene-object--box-face--front {
   background: white;
 }
+
+.scene-avatar {
+  background-color: yellowgreen;
+  border-radius: 50%;
+}

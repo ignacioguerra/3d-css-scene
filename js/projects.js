@@ -48,6 +48,14 @@ class Scene {
     return room
   }
 
+  createAvatar = (className, scaleX, scaleY) => {
+    const avatar = new Avatar(className, scaleX, scaleY)
+    avatar.unitValue = this.unitValue
+    this.objects.push(avatar)
+    this.ambient.assemble(avatar)
+    return avatar
+  }
+
   /**
    * Appends child of the scene element
    * @param {(Element|SceneEmptyChild)} child - Child node
@@ -656,7 +664,29 @@ class Box extends SceneObject {
   }
 }
 
+class Avatar extends SceneObject {
+  constructor(className, scaleX = 1, scaleY = 1) {
+    super(className)
+    
+    this.scaleX(scaleX)
+    this.scaleY(scaleY)
+    this.translateY(-1.7)
+    this.update()
+
+    this.classList.add('scene-avatar')
+  }
+}
+
 let scene = new Scene()
+
+let avatar = scene.createAvatar('user')
+
+avatar.translateZ(-3)
+avatar.translateX(5)
+avatar.update()
+
+
+
 let plane = scene.createPlane('floor', 4, 4)
 
 plane.id = 'pruebaa'
