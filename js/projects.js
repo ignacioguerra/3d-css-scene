@@ -713,13 +713,11 @@ class Avatar extends SceneObject {
 
 let scene = new Scene()
 
-let avatar = scene.createAvatar('user')
+// let avatar = scene.createAvatar('user')
 
-avatar.translateZ(-3)
-avatar.translateX(5)
-avatar.update()
-
-
+// avatar.translateZ(-3)
+// avatar.translateX(5)
+// avatar.update()
 
 let plane = scene.createPlane('floor', 4, 4)
 
@@ -767,6 +765,8 @@ step2.translateX(-17.5)
 step2.translateZ(-38)
 step2.update()
 
+let currentId
+
 /**
  * Connection to sockets
  * docs: https://hexdocs.pm/phoenix/js/
@@ -788,7 +788,10 @@ const channel = socket.channel(`room:${"dQw4w9WgXcQ"}`);
 channel
   .join()
   // User ID can be collected to this Camera's (me) internal properties
-  .receive("ok", ({ userId }) => console.log(`Received userId: ${userId}`))
+  .receive("ok", ({ userId }) => {
+    currentId = userId
+    console.log(`Received userId: ${userId}`)
+  })
   // Collect and display errors 
   .receive("error", ({ reason }) => console.log("Failed join", reason))
   .receive("timeout", () =>
@@ -800,22 +803,25 @@ channel
 // or individual events
 // https://hexdocs.pm/phoenix/js/#handling-individual-presence-join-and-leave-events
 const presence = new Presence(channel);
+const avatars = new Map();
 
 // detect if user has joined for the 1st time or from another tab/device
 presence.onJoin((id, current, newPres) => {
-  if(!current){
-    console.log("user has entered for the first time", newPres)
-  } else {
-    console.log("user additional presence", newPres)
+  if(!current && id !== currentId) {
+    console.log("somebody joined")
+    let newAvatar = scene.createAvatar('user')
+    newAvatar.update()
+    avatars.set(id, newAvatar)
+    displayUsers(presence.list())
   }
 })
 
 // detect if user has left from all tabs/devices, or is still present
 presence.onLeave((id, current, leftPres) => {
-  if(current.metas.length === 0){
-    console.log("user has left from all devices", leftPres)
-  } else {
-    console.log("user left from a device", leftPres)
+  if(current.metas.length === 0) {
+    console.log("somebody left")
+    avatars.delete(id)
+    displayUsers(presence.list())
   }
 })
 
@@ -825,7 +831,18 @@ presence.onSync(() => {
 })
 
 const displayUsers = (list) => {
-  console.log(list)
+  list.forEach(el => {
+    if (el.metas[0].user_id !== currentId) {
+      let updateAvatar = avatars.get(el.metas[0].user_id)
+      updateAvatar.translateX(el.metas[0].pos_x)
+      updateAvatar.translateY(el.metas[0].pos_y)
+      updateAvatar.translateZ(el.metas[0].pos_z)
+      updateAvatar.rotateZ(el.metas[0].rot_x)
+      updateAvatar.rotateZ(el.metas[0].rot_y)
+      updateAvatar.rotateZ(el.metas[0].rot_z)
+      updateAvatar.update()
+    }
+  });
 }
 /**
  * @todo Spacialized audio
