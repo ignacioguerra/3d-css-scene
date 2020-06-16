@@ -837,8 +837,8 @@ const displayUsers = (list) => {
       updateAvatar.translateX(el.metas[0].pos_x)
       updateAvatar.translateY(el.metas[0].pos_y)
       updateAvatar.translateZ(el.metas[0].pos_z)
-      updateAvatar.rotateZ(el.metas[0].rot_x)
-      updateAvatar.rotateZ(el.metas[0].rot_y)
+      updateAvatar.rotateX(el.metas[0].rot_x)
+      updateAvatar.rotateY(el.metas[0].rot_y)
       updateAvatar.rotateZ(el.metas[0].rot_z)
       updateAvatar.update()
     }
