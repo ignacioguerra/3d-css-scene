@@ -1,0 +1,68 @@
+.floor {
+	opacity: 1;
+	border-width: 20px;
+}
+
+.field .floor {
+	border-width: 20px;
+}
+
+.wall {
+	width: 1920px;
+	height: 500px;
+	margin-left: -960px;
+	margin-top: -250px;
+	backface-visibility: hidden;
+	transform: translate3d(0, -50px, -1080px);
+}
+
+.room .wall {
+	display: block;
+}
+
+.field .wall iframe {
+	display: block;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: 0 auto;
+	width: 100%;
+	height: 56.25%;
+}
+
+.stage .wall {
+	border: 20px solid white;
+	backface-visibility: visible;
+	background: #060606;
+}
+
+.stage .floor {
+	background: #060606;
+	border: 20px solid white;
+}
+
+.someone {
+	width: 350px;
+	height: 350px;
+	/* margin-left: -175px;
+	margin-top: -175px; */
+	background: #060606 url(https://i.pinimg.com/originals/52/c5/48/52c548bf41f674f82a75b96c6a818cc2.jpg) no-repeat center center;
+  background-size: cover;
+	/* border: 2px solid white; */
+	border-radius: 50%;
+	transform: /*rotateX(90deg)*/ translateY(-80px) translateZ(-890px);
+}
+
+.someone2 {
+	transform: /*rotateX(90deg)*/ translateY(-80px) translateX(-390px) translateZ(-390px);
+	background-image: url(https://images.squarespace-cdn.com/content/v1/5683c85f4bf118cdfb9ef3eb/1480789546114-HK8XSX017284RL9YOYU2/ke17ZwdGBToddI8pDm48kBFUKT45a8pb_pY0UIHKymVZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpwz3OH_aFO-YYWP7wjOFtEbUgl4LOFMIs_Z4pgzeVmQB9CYjQcFKmkUrzpFfhtB7LY/Blush.jpg);
+}
+
+.someone3 {
+	transform: /*rotateX(90deg)*/ translateY(-80px) translateX(490px) translateZ(-690px);
+}
+
+.someone3 {
+	transform: /*rotateX(90deg)*/ translateY(-80px) translateX(200px) translateZ(-290px);
+}

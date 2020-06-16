@@ -1,0 +1,137 @@
+html, body {
+	height: 100%;
+}
+
+body {
+	font: normal 100%/1.5 'PT Sans', sans-serif;
+	background: #060606;
+	color: #f8f8f8;
+	font-size: 32px;
+}
+
+* * { box-sizing: border-box; }
+
+.viewport {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+
+.camera,
+.assembly, .assembly > *,
+.room, .room > * {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform-style: preserve-3d;
+}
+
+.floor {
+	width: 1920px;
+	height: 1080px;
+	margin-left: -960px;
+	margin-top: -540px;
+	transform: rotateX(90deg) translate3d(0,-540px,0);
+	border: 15px solid white;
+	pointer-events: none;
+	padding: 30px;
+	opacity: 0.1;
+	/* transition: border 300ms ease-in-out; */
+}
+
+.active .floor {
+	opacity: 1;
+}
+
+.wall {
+	width: 1920px;
+	height: 500px;
+	margin-left: -960px;
+	margin-top: -250px;
+	backface-visibility: hidden;
+	transform: translate3d(0, -50px, -1080px);
+}
+
+.wall-n { transform: translate3d(0, 0, -1080px); }
+.wall-s { transform: rotateY(180deg) translate3d(0, 0, 0); }
+.wall-e { width: 1080px; transform: rotateY(90deg) translate3d(540px, 0, -540px); }
+.wall-w { width: 1080px; transform: rotateY(270deg) translate3d(-540px, 0, -1380px); }
+
+.debug .wall { border: 10px solid white; backface-visibility: visible; }
+.debug .floor::before { content: "PISO"; }
+.debug .wall-n::before { content: "NORTE"; }
+.debug .wall-s::before { content: "SUR"; }
+.debug .wall-e::before { content: "ESTE"; }
+.debug .wall-w::before { content: "OESTE"; }
+
+
+.room .wall {
+	display: none;
+}
+
+.active .wall {
+	display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.screen {
+	position: absolute;
+	left:50%;
+	top:50%;
+  width: 920px;
+	height: 400px;
+	margin-left: -460px;
+	margin-top: -200px;
+
+	position: relative;
+	
+	border: 5px solid white;
+	background: #060606 url(https://data.whicdn.com/images/117514657/original.gif) no-repeat center center;
+  background-size: cover;
+	/*transform: translate3d(0px, 0px, -1080px);/* rotateX(270deg) rotateY(90deg) rotateZ(180deg);*/
+	transition: background 200ms ease-in-out;
+	cursor: pinter;
+	/* backface-visibility: hidden; */
+}
+
+.screen:hover {
+	background-color: red;
+}
+
+.screen iframe {
+	width: 100%;
+	height: 100%;
+	background: #fff;
+}
+
+.pab-2 {
+	transform: translate3d(0px, 0px, -1250px);
+}
+
+.pab-2 .screen {
+	transform: rotateY(90deg) translate3d(540px, 0px, -960px);
+}
+
+.pab-2 .screen {
+	transform: rotateY(90deg) translate3d(540px, 0px, -960px);
+}
+
+#generic {
+	/* transform: rotateY(90deg) translate3d(540px, 0px, -1920px); */
+}
