@@ -1,75 +1,52 @@
-class Room {
-  
-  constructor(width = 1680, depth = 1050, height = 500, x = 0, z = 0) {
+import SceneObject from './sceneObject'
+import Plane from './plane'
 
-    this.width = width
-    this.height = height
-    this.depth = depth
-    this.x = x
-    this.z = z
+export default class Room extends SceneObject {
+  constructor(className, scaleX = 1, scaleY = 1, scaleZ = 1) {
+    super(className)
 
-    this.el = document.createElement('section')
-    this.floor = document.createElement('div')
-    this.walls = {
-      north: document.createElement('div'),
-      south: document.createElement('div'),
-      east: document.createElement('div'),
-      west: document.createElement('div')
-    }
+    this.floor = new Plane('scene-object--room-floor', scaleX, scaleZ)
+    this.east = new Plane('scene-object--room-wall', scaleZ, scaleY)
+    this.west = new Plane('scene-object--room-wall', scaleZ, scaleY)
+    this.north = new Plane('scene-object--room-wall', scaleX, scaleY)
+    this.south = new Plane('scene-object--room-wall', scaleX, scaleY)
 
-    this.el.classList.add('room')
-    
-    this.floor.classList.add('floor')
-    this.floor.style.width = `${this.width}px`
-    this.floor.style.height = `${this.depth}px`
-    this.floor.style.marginLeft = `${this.width/-2}px`
-    this.floor.style.marginTop = `${this.depth/-2}px`
-    this.floor.style.transform = `rotateX(90deg) translate3d(0,${this.depth/-2}px,0)`
-    this.el.appendChild(this.floor)
+    this.east.classList.add('scene-object--room-wall--east')
+    this.west.classList.add('scene-object--room-wall--west')
+    this.north.classList.add('scene-object--room-wall--north')
+    this.south.classList.add('scene-object--room-wall--south')
 
-    for(let key in this.walls) {
-      this.walls[key].classList.add('wall')
-      this.walls[key].classList.add('wall-' + key.substr(0,1))
-      this.walls[key].style.height = `${this.height}px`
-      this.walls[key].style.marginTop = `${this.height/-2}px`
-      this.el.appendChild(this.walls[key])
-    }
+    this.assemble(this.east)
+    this.assemble(this.floor)
+    this.assemble(this.west)
+    this.assemble(this.south)
+    this.assemble(this.north)
 
-    this.walls.north.style.width = this.walls.south.style.width = `${this.width}px`
-    this.walls.north.style.marginLeft = this.walls.south.style.marginLeft = `${this.width/-2}px`
-    this.walls.east.style.width = this.walls.west.style.width = `${this.depth}px`
-    this.walls.east.style.marginLeft = this.walls.west.style.marginLeft = `${this.depth/-2}px`
-    
-    this.walls.north.style.transform = `translate3d(0,${this.height/-2}px,-${this.depth}px)`
-    this.walls.south.style.transform = `rotateY(180deg) translate3d(0,${this.height/-2}px,0)`
-    this.walls.east.style.transform = `rotateY(90deg) translate3d(${this.depth/2}px,${this.height/-2}px,${this.width/-2}px)`
-    this.walls.west.style.transform = `rotateY(270deg) translate3d(${this.depth/-2}px,${this.height/-2}px,${this.width/-2}px)`
+    this.floor.rotateX(90)
+    this.east.rotateY(90)
+    this.west.rotateY(270)
+    this.south.rotateY(180)
 
-    this.moveTo(this.x, this.z)
+    this.scaleX(scaleX)
+    this.scaleY(scaleY)
+    this.scaleZ(scaleZ)
+    this.translateY(scaleY / -2)
 
+    this.classList.add('scene-object--room')
   }
 
-  moveTo(x = 0, z = 0) {
-    this.x = x
-    this.z = z
-    this.el.style.transform = `translate3d(${this.x}px, 0, ${this.z}px)`
-  }
+  update = () => {
+    this.floor.translate(0, 0, this.size.y / -2)
+    this.east.translate(0, 0, this.size.x / -2)
+    this.west.translate(0, 0, this.size.x / -2)
+    this.north.translate(0, 0, this.size.z / -2)
+    this.south.translate(0, 0, this.size.z / -2)
 
-  write(text) {
-    this.floor.textContent = text
-  }
-
-  isInside(object) {
-    if(!object) return false
-    
-    if(object.z > this.z -this.depth
-      && object.z < this.z
-      && object.x > this.x + this.width/-2
-      && object.x < this.x + this.width/2) {
-      this.el.classList.add('active')
-      return true
-    }
-    this.el.classList.remove('active')
-    return false
+    this.floor.update()
+    this.east.update()
+    this.west.update()
+    this.south.update()
+    this.north.update()
+    this.apply()
   }
 }
