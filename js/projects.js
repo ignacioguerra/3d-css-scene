@@ -778,7 +778,7 @@ import random_name from "node-random-name";
 // could bootstrap using initial camera position and rotation
 // random_name assigns default username and input could be retrieved from user
 // localhost:4000 is running https://github.com/pehuen-rodriguez/everlive
-const socket = new Socket("ws://localhost:4000/socket", {
+const socket = new Socket("wss://develop.nayra.coop/ever-live-server/socket", {
   params: { username: random_name() },
 });
 socket.connect();
