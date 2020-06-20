@@ -1,5 +1,6 @@
 import '../css/reset.css';
 import '../css/mini.css';
+import throttle from 'lodash.throttle';
 
 class Scene {
 
@@ -9,6 +10,7 @@ class Scene {
     this.unitValue = 35
     this.ambient = new SceneEmptyChild('scene-ambient')
     this.camera = new Camera(this)
+    // TODO: objects avatars delete
     this.objects = []
     this.parentNode = null
 
@@ -219,6 +221,8 @@ class Camera {
     this.updatePerspective()
     this.cameraObject.unitValue = this.parentScene.unitValue
     this.parentScene.append(this.cameraObject)
+
+    this._broadcastMovement = throttle(this.broadcastMovement, 100)
   }
 
   move = () => {
@@ -273,7 +277,7 @@ class Camera {
       skewX(0) skewY(0)
     `
     this.move()
-    this.broadcastMovement()
+    this._broadcastMovement()
     if(this.worldArround) this.worldArround.style.transform = `translate3d(${-this.x}px,${this.y}px,${-this.z}px)`
   }
 
@@ -353,6 +357,7 @@ class Camera {
     if(e.key.toLowerCase() === 'd' || e.keyCode === 'ArrowRight') this.movingTo.right = true
     if(e.key === ' ' && this.position.y < this.viewerHeight + 0.01) {
       this.speed.top = 0.1
+      console.log(presence.list())
     }
   }
 
@@ -522,8 +527,8 @@ class SceneObject extends SceneEmptyChild {
 
   rotateX = (value) => { this.rotation.x = value }
 
-  rotateY = (value) => { this.rotation.y = value
-  console.log(value) }
+  rotateY = (value) => { this.rotation.y = value }
+  // console.log(value) }
 
   rotateZ = (value) => { this.rotation.z = value }
 
@@ -778,7 +783,7 @@ import random_name from "node-random-name";
 // could bootstrap using initial camera position and rotation
 // random_name assigns default username and input could be retrieved from user
 // localhost:4000 is running https://github.com/pehuen-rodriguez/everlive
-const socket = new Socket("ws://localhost:4000/socket", {
+const socket = new Socket("wss://develop.nayra.coop/ever-live-server/socket", {
   params: { username: random_name() },
 });
 socket.connect();
@@ -830,20 +835,23 @@ presence.onSync(() => {
   displayUsers(presence.list())
 })
 
-const displayUsers = (list) => {
+const displayUsers = throttle((list) => {
   list.forEach(el => {
     if (el.metas[0].user_id !== currentId) {
       let updateAvatar = avatars.get(el.metas[0].user_id)
-      updateAvatar.translateX(el.metas[0].pos_x)
-      updateAvatar.translateY(el.metas[0].pos_y)
-      updateAvatar.translateZ(el.metas[0].pos_z)
-      updateAvatar.rotateX(el.metas[0].rot_x)
-      updateAvatar.rotateY(el.metas[0].rot_y)
-      updateAvatar.rotateZ(el.metas[0].rot_z)
-      updateAvatar.update()
+      if (updateAvatar) {
+        updateAvatar.translateX(el.metas[0].pos_x)
+        updateAvatar.translateY(el.metas[0].pos_y)
+        updateAvatar.translateZ(el.metas[0].pos_z)
+        updateAvatar.rotateX(el.metas[0].rot_x)
+        updateAvatar.rotateY(el.metas[0].rot_y)
+        updateAvatar.rotateZ(el.metas[0].rot_z)
+        updateAvatar.update()
+      }
     }
-  });
-}
+  })
+}, 200)
+
 /**
  * @todo Spacialized audio
  */
