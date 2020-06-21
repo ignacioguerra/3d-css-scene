@@ -1,3 +1,5 @@
+import SceneObject from './SceneObject'
+
 class Avatar extends SceneObject {
   constructor(className, scaleX = 1, scaleY = 1) {
     super(className)
