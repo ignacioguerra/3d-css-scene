@@ -29,6 +29,7 @@ room.update()
 let avtr = scene.createAvatar('me')
 avtr.translateZ(-7)
 avtr.update()
+scene.removeAvatar(avtr)
 
 let iframe = document.createElement('iframe')
 // iframe.src = 'https://www.youtube.com/embed/dQw4w9WgXcQ'

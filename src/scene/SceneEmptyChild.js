@@ -4,8 +4,10 @@
  */
 export default class SceneEmptyChild {
   constructor(className) {
+    this.collectionId = -1
     this.currentUnitValue = 1
     this.pieces = []
+    this.pieceId = 0
     this.element = document.createElement('div')
     this.element.style = `
       position: absolute;
@@ -18,8 +20,14 @@ export default class SceneEmptyChild {
 
   assemble(sceneEmptyChild) {
     sceneEmptyChild.unitValue = this.unitValue
+    sceneEmptyChild.collectionId = this.pieceId++
     this.element.appendChild(sceneEmptyChild.element)
     this.pieces.push(sceneEmptyChild)
+  }
+
+  unassemble(piece) {
+    const child = this.pieces.find(el => el.collectionId === piece.collectionId)
+    if(child) this.element.removeChild(child.element)
   }
 
   /**

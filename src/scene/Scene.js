@@ -71,9 +71,12 @@ export default class Scene {
   createAvatar = (className, scaleX, scaleY) => {
     const avatar = new Avatar(className, scaleX, scaleY)
     avatar.unitValue = this.unitValue
-    this.objects.push(avatar)
     this.ambient.assemble(avatar)
     return avatar
+  }
+
+  removeAvatar = (avatar) => {
+    this.ambient.unassemble(avatar)
   }
 
   /**
