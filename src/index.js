@@ -1,7 +1,7 @@
 import './assets/css/reset.css'
 import './assets/css/mini.css'
 import throttle from 'lodash.throttle'
-import Scene from './scene'
+import Scene, { Avatar } from './scene'
 
 
 let scene = new Scene()
@@ -25,6 +25,10 @@ box.update()
 let room = scene.createRoom('room', 40, 22.5, 50)
 room.translateZ(-22)
 room.update()
+
+let avtr = scene.createAvatar('me')
+avtr.translateZ(-7)
+avtr.update()
 
 let iframe = document.createElement('iframe')
 // iframe.src = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
@@ -53,6 +57,11 @@ step2.translateZ(-38)
 step2.update()
 
 let currentId
+
+
+scene.onUpdate(() => {
+  avtr.faceTo(scene.camera)
+})
 
 /**
  * Connection to sockets

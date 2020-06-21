@@ -3,6 +3,7 @@ import Box from './Box'
 import Camera from './Camera'
 import Plane from './Plane'
 import Room from './Room'
+import Avatar from './Avatar'
 
 export default class Scene {
   constructor() {
@@ -14,6 +15,7 @@ export default class Scene {
     // TODO: objects avatars delete
     this.objects = []
     this.parentNode = null
+    this.onUpdateEventHandler = null
 
     this.viewport.addEventListener(
       'mousedown',
@@ -34,7 +36,12 @@ export default class Scene {
 
   render = () => {
     this.camera.update()
+    if(this.onUpdateEventHandler) this.onUpdateEventHandler()
     requestAnimationFrame(this.render)
+  }
+
+  onUpdate = (onUpdateEventHandler) => {
+    this.onUpdateEventHandler = onUpdateEventHandler
   }
 
   createPlane = (className, scaleX, scaleY) => {
