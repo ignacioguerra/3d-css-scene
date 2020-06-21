@@ -15,7 +15,7 @@ module.exports = (env, options) => ({
     ],
   },
   entry: {
-    app: "./js/projects.js",
+    app: "./src/index.js",
   },
   output: {
     filename: "bundle.js",

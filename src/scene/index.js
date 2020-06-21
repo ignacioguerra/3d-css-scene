@@ -1,0 +1,6 @@
+export { default as Camera } from './Camera'
+export { default as SceneEmptyChild } from './SceneEmptyChild'
+export { default as Plane } from './Plane'
+export { default as Box } from './Box'
+export { default as Room } from './Room'
+export { default } from './Scene'

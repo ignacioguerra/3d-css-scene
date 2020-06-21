@@ -34,7 +34,7 @@ body {
 	margin-top: -540px;
 	transform: rotateX(90deg) translate3d(0,-540px,0);
 	border: 15px solid white;
-	pointer-events: none;
+	/* pointer-events: none; */
 	padding: 30px;
 	opacity: 0.1;
 	/* transition: border 300ms ease-in-out; */
