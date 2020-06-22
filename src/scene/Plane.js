@@ -9,7 +9,7 @@ export default class Plane extends SceneObject {
     this.update()
 
     this.classList.add('scene-object--plane')
-    this.style.pointerEvents = 'none'
+    // this.style.pointerEvents = 'none'
   }
 
   insert = (child) => {

@@ -31,15 +31,23 @@ avtr.translateZ(-7)
 avtr.update()
 scene.removeAvatar(avtr)
 
-let iframe = document.createElement('iframe')
-// iframe.src = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
-// iframe.frameborder = '0'
-// iframe.allow = 'autoplay; encrypted-media;'
+const params = new URLSearchParams(window.location.search)
+const y = params.get('y')
+const t = params.get('t')
 
-iframe.src = 'https://player.twitch.tv/?channel=buenosairesoutrun'
+let iframe = document.createElement('iframe')
+
 iframe.frameborder = '0'
-iframe.allowfullscreen = 'true'
-iframe.scrolling = 'no'
+if(t) {
+  iframe.src = `https://player.twitch.tv/?channel=${t}&parent=${window.location.hostname}`
+  iframe.allowfullscreen = 'true'
+  iframe.scrolling = 'no'
+  iframe.height="1080"
+  iframe.width="1920"
+} else if(y) {
+  iframe.src = `https://www.youtube.com/embed/${y}`
+  iframe.allow = 'autoplay; encrypted-media;'
+}
 room.north.insert(iframe)
 
 let stage = scene.createBox('stage', 40, 1.65, 6)
