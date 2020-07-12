@@ -1,5 +1,6 @@
 import SceneEmptyChild from './SceneEmptyChild'
 import throttle from 'lodash.throttle'
+import io from '../io'
 
 /**
  * Creates a CSS3d Camera
@@ -49,11 +50,7 @@ export default class Camera {
     )
     document.addEventListener('keypress', this.keyPressHandler, false)
     document.addEventListener('keyup', this.keyUpHandler, false)
-    document.addEventListener(
-      'visibilitychange',
-      this.stopMoving,
-      false,
-    )
+    document.addEventListener('visibilitychange', this.stopMoving, false)
     document.addEventListener('contextmenu', this.stopMoving, false)
     window.addEventListener('resize', this.updatePerspective, false)
 
@@ -79,44 +76,30 @@ export default class Camera {
     let moveX = 0
     let moveZ = 0
     if (this.movingTo.front)
-      this.speed.front +=
-        (this.maxSpeed - this.speed.front) * this.acceleration
+      this.speed.front += (this.maxSpeed - this.speed.front) * this.acceleration
     if (this.movingTo.back)
-      this.speed.back +=
-        (this.maxSpeed - this.speed.back) * this.acceleration
+      this.speed.back += (this.maxSpeed - this.speed.back) * this.acceleration
     if (this.movingTo.left)
-      this.speed.left +=
-        (this.maxSpeed - this.speed.left) * this.acceleration
+      this.speed.left += (this.maxSpeed - this.speed.left) * this.acceleration
     if (this.movingTo.right)
-      this.speed.right +=
-        (this.maxSpeed - this.speed.right) * this.acceleration
+      this.speed.right += (this.maxSpeed - this.speed.right) * this.acceleration
 
-    if (!this.movingTo.front)
-      this.speed.front *= 1 - this.acceleration
+    if (!this.movingTo.front) this.speed.front *= 1 - this.acceleration
     if (!this.movingTo.back) this.speed.back *= 1 - this.acceleration
     if (!this.movingTo.left) this.speed.left *= 1 - this.acceleration
-    if (!this.movingTo.right)
-      this.speed.right *= 1 - this.acceleration
+    if (!this.movingTo.right) this.speed.right *= 1 - this.acceleration
 
-    moveX +=
-      this.speed.front * Math.sin(Camera.radians(this.rotation.y))
-    moveZ -=
-      this.speed.front * Math.cos(Camera.radians(this.rotation.y))
+    moveX += this.speed.front * Math.sin(Camera.radians(this.rotation.y))
+    moveZ -= this.speed.front * Math.cos(Camera.radians(this.rotation.y))
 
-    moveX -=
-      this.speed.back * Math.sin(Camera.radians(this.rotation.y))
-    moveZ +=
-      this.speed.back * Math.cos(Camera.radians(this.rotation.y))
+    moveX -= this.speed.back * Math.sin(Camera.radians(this.rotation.y))
+    moveZ += this.speed.back * Math.cos(Camera.radians(this.rotation.y))
 
-    moveX -=
-      this.speed.left * Math.cos(Camera.radians(this.rotation.y))
-    moveZ -=
-      this.speed.left * Math.sin(Camera.radians(this.rotation.y))
+    moveX -= this.speed.left * Math.cos(Camera.radians(this.rotation.y))
+    moveZ -= this.speed.left * Math.sin(Camera.radians(this.rotation.y))
 
-    moveX +=
-      this.speed.right * Math.cos(Camera.radians(this.rotation.y))
-    moveZ +=
-      this.speed.right * Math.sin(Camera.radians(this.rotation.y))
+    moveX += this.speed.right * Math.cos(Camera.radians(this.rotation.y))
+    moveZ += this.speed.right * Math.sin(Camera.radians(this.rotation.y))
 
     this.position.x += count > 0 ? moveX / count : moveX
     this.position.z += count > 0 ? moveZ / count : moveZ
@@ -156,26 +139,25 @@ export default class Camera {
   }
 
   broadcastMovement = () => {
-    // console.log('br')
-    // if (channel && this.isMoving()) {
-    //   channel.push(
-    //     'move',
-    //     {
-    //       posX: this.position.x,
-    //       posY: this.position.y,
-    //       posZ: this.position.z,
-    //       rotX: this.rotation.x,
-    //       rotY: this.rotation.y,
-    //       rotZ: this.rotation.z,
-    //     },
-    //     10000,
-    //   )
-    // }
+    const { channel } = io.getInstances()
+    if (channel && this.isMoving()) {
+      channel.push(
+        'move',
+        {
+          posX: this.position.x,
+          posY: this.position.y,
+          posZ: this.position.z,
+          rotX: this.rotation.x,
+          rotY: this.rotation.y,
+          rotZ: this.rotation.z,
+        },
+        10000,
+      )
+    }
   }
 
   updatePerspective = () => {
-    this.perspective =
-      (0.5 / Math.tan(6.981317)) * Math.min(innerWidth, innerHeight) // Math.min(this.parentScene.width, this.parentScene.height)
+    this.perspective = (0.5 / Math.tan(6.981317)) * Math.min(innerWidth, innerHeight) // Math.min(this.parentScene.width, this.parentScene.height)
     this.parentScene.viewport.style.perspective = `${this.perspective}px`
   }
 
