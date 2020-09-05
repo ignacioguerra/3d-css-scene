@@ -15,12 +15,12 @@ export default class Camera {
     this.cameraObject = new SceneEmptyChild('scene-camera')
     this.parentScene = scene
     this.worldArround = null
-    this.viewerHeight = 1.75
+    this.viewerHeight = 175
     this.position = { x: 0, y: this.viewerHeight, z: 0 }
     this.rotation = { x: 0, y: 0, z: 0 }
     this.blank = { x: 0, y: 0, z: 0 }
     this.perspective = 600
-    this.maxSpeed = 0.2
+    this.maxSpeed = this.viewerHeight * 0.05
     this.isRotating = false
     this.rotationTimeout = null
     this.speed = {
@@ -66,9 +66,9 @@ export default class Camera {
 
   move = () => {
     if (this.paused) {
-      this.rotation.x += (this.blank.x - this.rotation.x) * 0.05
-      this.rotation.y += (this.blank.y - this.rotation.y) * 0.05
-      this.rotation.z += (this.blank.z - this.rotation.z) * 0.05
+      this.rotation.x += (this.blank.x - this.rotation.x%360) * 0.05
+      this.rotation.y += (this.blank.y - this.rotation.y%360) * 0.05
+      this.rotation.z += (this.blank.z - this.rotation.z%360) * 0.05
     }
 
     const count =
@@ -122,7 +122,7 @@ export default class Camera {
     this.position.z += count > 0 ? moveZ / count : moveZ
     this.position.y += this.speed.top
 
-    this.speed.top -= 0.00625
+    this.speed.top -= this.maxSpeed * 0.0375
     if (this.position.y < this.viewerHeight) {
       this.position.y = this.viewerHeight
       this.speed.top = 0
@@ -189,6 +189,11 @@ export default class Camera {
 
   unlink = () => {
     this.paused = true
+    this.blank = { 
+      x: 0, // Math.abs(this.rotation.x%360) > 180 ? 360*(this.rotation.x < 0 ? -1 : 1) : 0, 
+      y: Math.atan2(0 - this.position.x, this.position.z - (-883)) * 180 / Math.PI,  //Math.abs(this.rotation.y%360) > 180 ? 360*(this.rotation.y < 0 ? -1 : 1) : 0, 
+      z: 0, // Math.abs(this.rotation.z%360) > 180 ? 360*(this.rotation.z < 0 ? -1 : 1) : 0 
+    }
     this.stopMoving()
   }
 
@@ -232,8 +237,7 @@ export default class Camera {
     if (e.key.toLowerCase() === 'd' || e.keyCode === 'ArrowRight')
       this.movingTo.right = true
     if (e.key === ' ' && this.position.y < this.viewerHeight + 0.01) {
-      this.speed.top = 0.1
-      console.log(presence.list())
+      this.speed.top = this.maxSpeed * 0.625
     }
   }
 

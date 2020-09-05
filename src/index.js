@@ -4,26 +4,49 @@ import throttle from 'lodash.throttle'
 import Scene, { Avatar } from './scene'
 
 let scene = new Scene()
-let plane = scene.createPlane('floor', 4, 4)
+// let plane = scene.createPlane('floor', 4, 4)
 
-plane.id = 'pruebaa'
-plane.translate(-10, 0, -20)
-plane.translateY(-6)
-plane.update()
+// plane.id = 'pruebaa'
+// plane.translate(-10, 0, -20)
+// plane.translateY(-6)
+// plane.update()
 
-let h1 = document.getElementById('test-content')
-plane.insert(h1)
+// let h1 = document.getElementById('test-content')
+// plane.insert(h1)
 
-let box = scene.createBox('box', 4, 1, 12)
-box.translateZ(-20)
-box.rotateY(35)
-box.rotateZ(65)
-box.id = 'pruebaa2'
-box.update()
+// let box = scene.createBox('box', 4, 1, 12)
+// box.translateZ(-20)
+// box.rotateY(35)
+// box.rotateZ(65)
+// box.id = 'pruebaa2'
+// box.update()
 
-let room = scene.createRoom('room', 40, 22.5, 50)
-room.translateZ(-22)
+let room = scene.createRoom('room', 3600, 1080, 3000)
+room.translateZ(-200)
 room.update()
+
+// let table = scene.createBox('stage', 500, 40, 200)
+// // table.translateX(733)
+// table.translateZ(483)
+// table.id = 'pruebaa2'
+// table.update()
+
+// let table2 = scene.createBox('stage', 1366, 1400, 1366)
+// table2.translateY(-1100)
+// table2.translateZ(-200)
+// // table2.rotateY(32)
+// table2.id = 'pruebaa3'
+// table2.update()
+
+// let column1 = scene.createBox('colum', 70, 400, 70)
+// column1.translateX(613)
+// column1.translateZ(413)
+// column1.update()
+
+// let column2 = scene.createBox('colum', 70, 400, 70)
+// column2.translateX(-613)
+// column2.translateZ(413)
+// column2.update()
 
 let avtr = scene.createAvatar('me')
 avtr.translateZ(-7)
@@ -49,20 +72,23 @@ if(t) {
 }
 room.north.insert(iframe)
 
-let stage = scene.createBox('stage', 40, 1.65, 6)
-stage.translateZ(-44)
-stage.id = 'pruebaa2'
-stage.update()
+let h1 = document.getElementById('test-content')
+room.east.insert(h1)
 
-let step = scene.createBox('step', 5, 1.12, 1.5)
-step.translateX(-17.5)
-step.translateZ(-40)
-step.update()
+// let stage = scene.createBox('stage', 40, 1, 6)
+// stage.translateZ(-44)
+// stage.id = 'pruebaa2'
+// stage.update()
 
-let step2 = scene.createBox('step', 5, 0.57, 1.5)
-step2.translateX(-17.5)
-step2.translateZ(-38)
-step2.update()
+// let step = scene.createBox('step', 5, 1.12, 1.5)
+// step.translateX(-17.5)
+// step.translateZ(-40)
+// step.update()
+
+// let step2 = scene.createBox('step', 5, 0.57, 1.5)
+// step2.translateX(-17.5)
+// step2.translateZ(-38)
+// step2.update()
 
 let currentId
 

@@ -1,10 +1,15 @@
 html, body {
-	height: 100%;
+  height: 100%;
+  --theme-color: #f8f8f8;
+  --background-color: #060606;
+  --text-color: #fff;
+  --border-width: 50px;
 }
 
 body {
 	font: normal 100%/1.5 'PT Sans', sans-serif;
-	background: #060606;
+  background: var(--background-color);
+  background-size: cover;
 	color: #f8f8f8;
 	font-size: 32px;
 }
@@ -12,11 +17,11 @@ body {
 * * { box-sizing: border-box; }
 
 .scene-object--plane {
-	border: 2px solid white;
+	border: var(--border-width) solid var(--theme-color);
 }
 
 .scene-object--box-face {
-  background: rgba(06,06,06,.85);
+  background: var(--background-color);;
   /* border: 25px solid white; */
 }
 
@@ -29,31 +34,54 @@ body {
 }
 
 .scene-object--room-wall {
-  border: 0;
+  border-width: 0;
   /* border: 15px solid yellowgreen; */
 }
 
 .scene-object--room-floor {
-  background: #060606;
-  background-size: 40px;
-  border-width: 50px;
+  background: var(--background-color);
+  /* background: rgb(63,94,251); */
+  /* background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgb(255, 46, 121) 5%, rgb(73, 64, 102) 80%) repeat scroll 0% 0%;
+  background-size: cover; */
+  border-width: var(--border-width);
+  /* outline: 1px solid transparent; */
+}
+
+
+.scene-object--room-wall {
+  /* background: black;
+  background-size: cover; */
+  /*border-bottom: var(--border-width) dotted var(--theme-color);*/
+}
+
+.scene-object--room-wall--north {
+  background-size: cover;
+  /* border-width: 30px; */
+  /* border-left-width: 80px;
+  border-right-width: 80px;
+  border-bottom-width: 30px; */
+  /* border-top-left-radius: 60px;
+  border-top-right-radius: 60px; */
 }
 
 iframe {
   display: block;
   position: absolute;
   right: 0;
-  bottom: 60px;
+  bottom: 0;
   left: 0;
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  /* max-width: 1280px;
-  max-height: 720px; */
+  max-width: 1920px;
+  max-height: 1080px; 
+  transform: translateZ(var(--border-width));
+  background: black;
+  /* box-shadow: 0 0 18px rgba(0,0,0,.65); */
 }
 
 .stage .scene-object--box-face--front {
-  background: white;
+  /* background: white; */
 }
 
 .scene-avatar--face {

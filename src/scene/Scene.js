@@ -9,7 +9,7 @@ export default class Scene {
   constructor() {
     this.playState = 'paused'
     this.viewport = this.createElement('scene-viewport')
-    this.unitValue = 35
+    this.unitValue = 1
     this.ambient = new SceneEmptyChild('scene-ambient')
     this.camera = new Camera(this)
     // TODO: objects avatars delete
