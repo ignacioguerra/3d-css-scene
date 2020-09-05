@@ -1,7 +1,7 @@
 import './assets/css/reset.css'
 import './assets/css/mini.css'
-import throttle from 'lodash.throttle'
-import Scene, { Avatar } from './scene'
+import Scene from './scene'
+import IO from './io'
 
 let scene = new Scene()
 // let plane = scene.createPlane('floor', 4, 4)
@@ -56,17 +56,19 @@ scene.removeAvatar(avtr)
 const params = new URLSearchParams(window.location.search)
 const y = params.get('y')
 const t = params.get('t')
+let videoId = t
 
-let iframe = document.createElement('iframe')
+const iframe = document.createElement('iframe')
 
 iframe.frameborder = '0'
-if(t) {
+if (t) {
   iframe.src = `https://player.twitch.tv/?channel=${t}&parent=${window.location.hostname}`
   iframe.allowfullscreen = 'true'
   iframe.scrolling = 'no'
-  iframe.height="1080"
-  iframe.width="1920"
-} else if(y) {
+  iframe.height = '1080'
+  iframe.width = '1920'
+} else if (y) {
+  videoId = y
   iframe.src = `https://www.youtube.com/embed/${y}`
   iframe.allow = 'autoplay; encrypted-media;'
 }
@@ -89,8 +91,7 @@ room.east.insert(h1)
 // step2.translateX(-17.5)
 // step2.translateZ(-38)
 // step2.update()
-
-let currentId
+IO.init(null, videoId, scene)
 
 scene.onUpdate(() => {
   avtr.faceTo(scene.camera)
