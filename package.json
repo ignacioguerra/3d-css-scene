@@ -2,9 +2,10 @@
   "name": "3d-css-scene",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/bundle.js",
   "scripts": {
     "build": "webpack --mode=production",
+    "build:watch": "webpack -w --mode=production",
     "start": "webpack-dev-server --open"
   },
   "repository": {
