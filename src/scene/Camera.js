@@ -1,6 +1,5 @@
 import SceneEmptyChild from './SceneEmptyChild'
 import throttle from 'lodash.throttle'
-import io from '../io'
 
 /**
  * Creates a CSS3d Camera
@@ -15,7 +14,7 @@ export default class Camera {
   constructor(scene) {
     this.cameraObject = new SceneEmptyChild('scene-camera')
     this.parentScene = scene
-    this.worldArround = null
+    this.worldAround = null
     this.viewerHeight = 175
     this.position = { x: 0, y: this.viewerHeight, z: 0 }
     this.rotation = { x: 0, y: 0, z: 0 }
@@ -63,9 +62,9 @@ export default class Camera {
 
   move = () => {
     if (this.paused) {
-      this.rotation.x += (this.blank.x - this.rotation.x%360) * 0.05
-      this.rotation.y += (this.blank.y - this.rotation.y%360) * 0.05
-      this.rotation.z += (this.blank.z - this.rotation.z%360) * 0.05
+      this.rotation.x += (this.blank.x - (this.rotation.x % 360)) * 0.05
+      this.rotation.y += (this.blank.y - (this.rotation.y % 360)) * 0.05
+      this.rotation.z += (this.blank.z - (this.rotation.z % 360)) * 0.05
     }
 
     const count =
@@ -122,8 +121,8 @@ export default class Camera {
     `
     this.move()
     this._broadcastMovement()
-    if (this.worldArround)
-      this.worldArround.style.transform = `translate3d(${-this.x}px,${
+    if (this.worldAround)
+      this.worldAround.style.transform = `translate3d(${-this.x}px,${
         this.y
       }px,${-this.z}px)`
   }
@@ -139,21 +138,19 @@ export default class Camera {
   }
 
   broadcastMovement = () => {
-    const { channel } = io.getInstances()
-    if (channel && this.isMoving()) {
-      channel.push(
-        'move',
-        {
-          posX: this.position.x,
-          posY: this.position.y,
-          posZ: this.position.z,
-          rotX: this.rotation.x,
-          rotY: this.rotation.y,
-          rotZ: this.rotation.z,
-        },
-        10000,
+    this.isMoving() &&
+      this.cameraObject.element.dispatchEvent(
+        new CustomEvent('move', {
+          detail: {
+            posX: this.position.x,
+            posY: this.position.y,
+            posZ: this.position.z,
+            rotX: this.rotation.x,
+            rotY: this.rotation.y,
+            rotZ: this.rotation.z,
+          },
+        }),
       )
-    }
   }
 
   updatePerspective = () => {
@@ -171,10 +168,10 @@ export default class Camera {
 
   unlink = () => {
     this.paused = true
-    this.blank = { 
-      x: 0, // Math.abs(this.rotation.x%360) > 180 ? 360*(this.rotation.x < 0 ? -1 : 1) : 0, 
-      y: Math.atan2(0 - this.position.x, this.position.z - (-883)) * 180 / Math.PI,  //Math.abs(this.rotation.y%360) > 180 ? 360*(this.rotation.y < 0 ? -1 : 1) : 0, 
-      z: 0, // Math.abs(this.rotation.z%360) > 180 ? 360*(this.rotation.z < 0 ? -1 : 1) : 0 
+    this.blank = {
+      x: 0, // Math.abs(this.rotation.x%360) > 180 ? 360*(this.rotation.x < 0 ? -1 : 1) : 0,
+      y: (Math.atan2(0 - this.position.x, this.position.z - -883) * 180) / Math.PI, //Math.abs(this.rotation.y%360) > 180 ? 360*(this.rotation.y < 0 ? -1 : 1) : 0,
+      z: 0, // Math.abs(this.rotation.z%360) > 180 ? 360*(this.rotation.z < 0 ? -1 : 1) : 0
     }
     this.stopMoving()
   }
@@ -246,8 +243,8 @@ export default class Camera {
    */
   place(ambient) {
     if (ambient instanceof SceneEmptyChild) {
-      this.worldArround = ambient
-      this.cameraObject.assemble(this.worldArround)
+      this.worldAround = ambient
+      this.cameraObject.assemble(this.worldAround)
     }
   }
 
