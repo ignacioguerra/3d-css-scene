@@ -1,7 +1,7 @@
 {
   "name": "3d-css-scene",
   "version": "0.0.0",
-  "description": "",
+  "description": "Create and manipulate a walkable 3d css scene",
   "main": "dist/bundle.js",
   "scripts": {
     "build": "webpack --mode=production",
@@ -17,9 +17,15 @@
     "type": "git",
     "url": "git+https://github.com/ignacioguerra/3d-css-scene.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "3d",
+    "css",
+    "space",
+    "scene",
+    "interactive"
+  ],
+  "author": "Ignacio Guerra",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/ignacioguerra/3d-css-scene/issues"
   },
@@ -44,8 +50,6 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "lodash.throttle": "^4.1.1",
-    "node-random-name": "^1.0.1",
-    "phoenix": "^1.5.3"
+    "lodash.throttle": "^4.1.1"
   }
 }
