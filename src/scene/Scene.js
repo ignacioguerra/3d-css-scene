@@ -8,8 +8,9 @@ import Avatar from './Avatar'
 export default class Scene {
   constructor() {
     this.playState = 'paused'
-    this.viewport = this.createElement('scene-viewport')
     this.unitValue = 1
+
+    this.viewport = this.createElement('scene-viewport')
     this.ambient = new SceneEmptyChild('scene-ambient')
     this.camera = new Camera(this)
     // TODO: objects avatars delete
@@ -17,11 +18,7 @@ export default class Scene {
     this.parentNode = null
     this.onUpdateEventHandler = null
 
-    this.viewport.addEventListener(
-      'mousedown',
-      this.mouseDownHandler,
-      false,
-    )
+    this.viewport.addEventListener('mousedown', this.mouseDownHandler, false)
     document.addEventListener(
       'pointerlockchange',
       this.pointerLockChangeHandler,
@@ -36,7 +33,7 @@ export default class Scene {
 
   render = () => {
     this.camera.update()
-    if(this.onUpdateEventHandler) this.onUpdateEventHandler()
+    if (this.onUpdateEventHandler) this.onUpdateEventHandler()
     requestAnimationFrame(this.render)
   }
 
@@ -130,7 +127,7 @@ export default class Scene {
   }
 
   pause = () => {
-    this.pased = true
+    this.paused = true
     this.camera.unlink()
   }
 
@@ -148,8 +145,7 @@ export default class Scene {
    * @event viewport~mousedown
    */
   pointerLockChangeHandler = (e) => {
-    if (document.pointerLockElement !== this.viewport)
-      this.paused = true
+    if (document.pointerLockElement !== this.viewport) this.paused = true
   }
 
   /**
