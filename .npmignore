@@ -1,0 +1,8 @@
+# Ignore everything by default
+*
+
+# Keep the following files
+!/dist/**/*
+!/src/**/*
+!package.json
+!README.md
