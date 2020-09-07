@@ -1,6 +1,33 @@
 # 3d-css-scene
 
-## Run this project
+## Installation
+
+Using npm:
+```shell
+npm i --save 3d-css-scene
+```
+
+You may enjoy tools like [Webpack](https://webpack.js.org/) and [Babel](https://babeljs.io/) to import and use the 3d-css-scene making sure your ECMAScript code remains compatible with older browsers.
+
+Importing 3d-css-scene in you whatever.js file and adding a room:
+```js
+// Load the main object. Constructor will instantiate the camera and allow for objects creation.
+import { Scene } from '3d-css-scene'
+// Load required css styling for the scene.
+import '3d-css-scene/dist/app.css'
+
+// Instantiate the Scene object
+const scene = new Scene()
+
+// Add a room to your scene
+const room = scene.createRoom('room', 3600, 1080, 3000)
+room.translateZ(-200)
+room.update()
+```
+
+## Development
+
+### Run this project
 
 Install dependencies
 
@@ -14,7 +41,7 @@ Run the development server
 npm start
 ```
 
-## Development
+### Local test with npm link
 
 To locally test this library you must first expose this library to your node installation directory. This wil install all dependencies and finally output a symlink message.
 
