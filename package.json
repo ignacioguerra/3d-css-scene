@@ -1,11 +1,17 @@
 {
   "name": "3d-css-scene",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/bundle.js",
   "scripts": {
     "build": "webpack --mode=production",
-    "start": "webpack-dev-server --open"
+    "build:watch": "webpack -w --mode=production",
+    "start": "webpack-dev-server --open",
+    "prepare": "npm run build",
+    "publish": "git push origin --tags && git push origin",
+    "release:major": "npm version major && npm publish",
+    "release:minor": "npm version minor && npm publish",
+    "release:patch": "npm version patch && npm publish"
   },
   "repository": {
     "type": "git",

@@ -23,6 +23,8 @@ module.exports = (env, options) => ({
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    library: '3d-css-scene',
+    libraryTarget: 'umd'
   },
   module: {
     rules: [
