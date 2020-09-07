@@ -8,7 +8,7 @@
     "build:watch": "webpack -w --mode=production",
     "start": "webpack-dev-server --open",
     "prepare": "npm run build",
-    "publish": "git push origin --tags",
+    "publish": "git push origin --tags && git push origin",
     "release:major": "npm version major && npm publish",
     "release:minor": "npm version minor && npm publish",
     "release:patch": "npm version patch && npm publish"
