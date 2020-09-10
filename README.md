@@ -1,6 +1,6 @@
 # 3d-css-scene
 
-Inspired by [Keith Clark's](https://keithclark.co.uk/) [CSS 3D Engine](https://keithclark.co.uk/labs/css-fps/)?
+Inspired by [Keith Clark's](https://keithclark.co.uk/) [CSS 3D Engine](https://keithclark.co.uk/labs/css-fps/)
 
 ## Installation
 
