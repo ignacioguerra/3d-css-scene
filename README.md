@@ -1,5 +1,7 @@
 # 3d-css-scene
 
+Inspired by [Keith Clark's](https://keithclark.co.uk/) [CSS 3D Engine](https://keithclark.co.uk/labs/css-fps/)?
+
 ## Installation
 
 Using npm:
@@ -24,6 +26,13 @@ const room = scene.createRoom('room', 3600, 1080, 3000)
 room.translateZ(-200)
 room.update()
 ```
+
+Scene allows the instanciation of the main object and it allows the creation of the following objects, via dedicated functions, where `className` is a `string` and every scaleX|Y|Z is a `number`:
+
+- Room with `scene.createRoom(className, scaleX, scaleY, scaleZ)`
+- Plane with `scene.createPlane(className, scaleX, scaleY)`
+- Box with `scene.createBox(className, scaleX, scaleY, scaleZ)`
+- Avatar with `scene.createAvatar(className, scaleX, scaleY)`
 
 ## Development
 
