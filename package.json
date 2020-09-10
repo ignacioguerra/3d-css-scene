@@ -1,6 +1,6 @@
 {
   "name": "3d-css-scene",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Create and manipulate a walkable 3d css scene",
   "main": "dist/bundle.js",
   "scripts": {
