@@ -27,7 +27,7 @@ room.translateZ(-200)
 room.update()
 ```
 
-Scene allows the instanciation of the main object and it allows the creation of the following objects, via dedicated functions, where `className` is a `string` and every scaleX|Y|Z is a `number`:
+Scene allows the instanciation of the main object and the creation of the following objects, via dedicated functions, where `className` is a `string` and every scaleX|Y|Z is a `number`:
 
 - Room with `scene.createRoom(className, scaleX, scaleY, scaleZ)`
 - Plane with `scene.createPlane(className, scaleX, scaleY)`
