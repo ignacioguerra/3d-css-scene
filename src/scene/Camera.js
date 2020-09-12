@@ -205,7 +205,7 @@ export default class Camera {
    * @event document~keypress
    */
   keyPressHandler = (e) => {
-    e.preventDefault()
+    !this.paused && e.preventDefault()
     if (this.paused) return false
     if (e.key.toLowerCase() === 'w' || e.keyCode === 'ArrowUp')
       this.movingTo.front = true
@@ -225,7 +225,7 @@ export default class Camera {
    * @event document~keyup
    */
   keyUpHandler = (e) => {
-    e.preventDefault()
+    !this.paused && e.preventDefault()
     if (this.paused) return false
     if (e.key.toLowerCase() === 'w' || e.keyCode === 'ArrowUp')
       this.movingTo.front = false
