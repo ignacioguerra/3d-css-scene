@@ -153,7 +153,7 @@ export default class Scene {
    * @event document~keypress
    */
   keyPressHandler = (e) => {
-    e.preventDefault()
+    this.paused && e.preventDefault()
     if (e.key.toLowerCase() === 'Escape') {
       this.paused = true
     }
