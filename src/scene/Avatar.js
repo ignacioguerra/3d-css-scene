@@ -13,7 +13,7 @@ export default class Avatar extends SceneObject {
 
     // this.scaleX(scaleX)
     // this.scaleY(scaleY)
-    this.face.translateY(-2)
+    this.face.translateY(-175)
     // this.face.update()
 
     this.base.rotateX(90)
