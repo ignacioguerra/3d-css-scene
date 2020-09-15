@@ -1,6 +1,6 @@
 import './assets/css/reset.css'
 import './assets/css/mini.css'
 import { name, version } from '../package.json'
-import Scene from './scene'
+import Scene, { SpacializedAudio } from './scene'
 
-export { name, version, Scene }
+export { name, version, Scene, SpacializedAudio }
